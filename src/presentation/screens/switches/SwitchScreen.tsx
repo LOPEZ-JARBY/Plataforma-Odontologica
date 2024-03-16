@@ -34,7 +34,7 @@ export const SwitchScreen = () => {
                 <CustomSwitch
                     isOn={state.isHungry}
                     onChance={(value) => setState({ ...state, isHungry: value })}
-                    text="¿Tiene hambre?"
+                    text="¿Tiene hambre de cena?"
 
                 />
 
