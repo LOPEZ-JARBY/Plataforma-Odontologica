@@ -43,7 +43,7 @@ export const SwitchScreen = () => {
                 <CustomSwitch
                     isOn={state.isHappy}
                     onChance={(value) => setState({ ...state, isHappy: value })}
-                    text="Es Feliz?"
+                    text="Es Feliz trabajando para BASA?"
 
                 />
 
