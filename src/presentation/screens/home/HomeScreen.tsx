@@ -46,6 +46,11 @@ export const menuItems = [
       component: 'InfiniteScrollScreen',
     },
     {
+      name: 'InfiniteScroll2',
+      icon: 'download-outline',
+      component: 'InfiniteScrollScreen2',
+    },
+    {
       name: 'Slides',
       icon: 'flower-outline',
       component: 'SlidesScreen',
@@ -107,6 +112,18 @@ return (
                 ))
               }
              
+             <View style={{ marginTop: 30}} />
+              {
+                uiMenuItems.map( (item, index) => (
+                  <MenuItem key={ item.component }
+                   {...item}
+                    isFirst={ index === 0 }
+                    isLast={ index === uiMenuItems.length - 1 }
+                    
+                   />
+                ))
+              }
+              
               <View style={{ marginTop: 30}} />
 
               {
@@ -120,17 +137,7 @@ return (
                 ))
               }
              
-              <View style={{ marginTop: 30}} />
-              {
-                uiMenuItems.map( (item, index) => (
-                  <MenuItem key={ item.component }
-                   {...item}
-                    isFirst={ index === 0 }
-                    isLast={ index === uiMenuItems.length - 1 }
-                    
-                   />
-                ))
-              }
+
              
               <View style={{ marginTop: 30}} />
 

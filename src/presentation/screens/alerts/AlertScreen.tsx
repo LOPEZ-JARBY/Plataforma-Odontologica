@@ -37,7 +37,7 @@ export const AlertScreen = () => {
           const onShowPrompt = () => {
 
             showPrompt({
-                title:  'Escriba la respuesta secreta',
+                title:  'Escriba la respuesta secreta!!!!!',
                 subTitle: 'Tipo: Lugares',
                 buttons: [
                     { text: 'ok', onPress: () => console.log('ok') }
