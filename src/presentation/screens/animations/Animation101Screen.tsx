@@ -1,11 +1,15 @@
 
-import { Text, View } from 'react-native';
+import { Text, View } from 'react-native'
 
-export const Animation101Screen = () => {
+export const  Animation101Screen = () => {
+  
     return (
-        <View>
-            <Text>Animation101Screen</Text>
-        </View>
+      <View>
+        <Text>Animation101Screen</Text>
+      </View>
     )
+  
 }
+
+
 

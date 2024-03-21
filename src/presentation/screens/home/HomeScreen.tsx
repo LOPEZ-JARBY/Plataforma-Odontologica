@@ -10,12 +10,17 @@ const animationMenuItems = [
    {
     name: 'Animation 101',
     icon: 'cube-outline',
-    component: 'Animation101Screen',
+    component: 'Animation101Screen  ',
   },
   {
     name: 'Animation 102',
     icon: 'albums-outline',
     component: 'Animation102Screen',
+  },
+  {
+    name: 'EDIT',
+    icon: 'albums-outline',
+    component: 'EditRoleScreen',
   },
 
 ]
@@ -81,6 +86,11 @@ export const menuItems = [
     icon: 'document-text-outline',
     component: 'TextInputScreen',
   },
+  {
+    name: 'RolesScreen',
+    icon: 'document-text-outline',
+    component: 'RolesScreen',
+  },
 
   ]
 
@@ -123,7 +133,7 @@ return (
                    />
                 ))
               }
-              
+
               <View style={{ marginTop: 30}} />
 
               {
