@@ -103,19 +103,13 @@ export const Animation102Screen = () => {
   };
 
   const [newRoleData, setNewRoleData] = useState<any>({
-    Rol: '',
-    Descripcion: '',
-    Usr_Registro: '',
+    Rol: editedRol,
+    Descripcion: editedDescripcion,
+    Usr_Registro: editedUsrRegistro,
   });
   
   const handleAddRole = () => {
-    console.log('Datos a enviar al backend:', {
-      Cod_Rol: editedCodRol,
-      Rol: editedRol,
-      Descripcion: editedDescripcion,
-      EstadoBD: editedEstadoBD,
-      Usr_Registro: editedUsrRegistro,
-    });
+
     // Realizar la solicitud POST al backend
     fetch('http://10.0.2.2:3000/api/roles', {
       method: 'POST',
@@ -124,25 +118,22 @@ export const Animation102Screen = () => {
       },
       body: JSON.stringify(newRoleData), // Convertir los datos a formato JSON
     })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Error al agregar el nuevo rol');
-        }
-        return response.json(); // Convertir la respuesta a formato JSON
-      })
-      .then(data => {
-        // Manejar la respuesta del backend (opcional)
-        console.log('Nuevo rol agregado:', data);
-        
-        // Actualizar el estado o realizar cualquier acción necesaria
-        // Por ejemplo, cerrar el modal de agregar nuevo rol
-        setIsAddModalVisible(false);
-      })
-      .catch(error => {
-        console.error('Error al agregar el nuevo rol:', error);
-        // Manejar cualquier error ocurrido durante la solicitud
-      });
-  };
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Error al agregar el nuevo rol');
+      }
+      return response.json();
+    })
+    .then(() => {
+      setIsAddModalVisible(false);
+      setNewRoleData({ Rol: '', Descripcion: '', Usr_Registro: '' });
+      fetch('http://10.0.2.2:3000/api/roles')
+        .then(response => response.json())
+        .then(data => setResults(data))
+        .catch(error => console.error('Error al ejecutar la consulta: ' + error));
+    })
+    .catch(error => console.error('Error al agregar el nuevo rol:', error));
+};
   
   
 
@@ -198,20 +189,20 @@ export const Animation102Screen = () => {
           {/* Contenido del segundo modal */}
           <TextInput
             style={styles.input}
-            value={editedRol}
-            onChangeText={text => setEditedRol(text)}
+            value={newRoleData.Rol}
+            onChangeText={text => setNewRoleData({ ...newRoleData, Rol: text })}
             placeholder="Rol"
           />
           <TextInput
             style={styles.input}
-            value={editedDescripcion}
-            onChangeText={text => setEditedDescripcion(text)}
+            value={newRoleData.Descripcion}
+            onChangeText={text => setNewRoleData({ ...newRoleData, Descripcion: text })}
             placeholder="Descripción"
           />
           <TextInput
             style={styles.input}
-            value={editedUsrRegistro}
-            onChangeText={text => setEditedUsrRegistro(text)}
+            value={newRoleData.Usr_Registro}
+            onChangeText={text => setNewRoleData({ ...newRoleData, Usr_Registro: text })}
             placeholder="Usuario de Registro"
           />
           <Button mode="contained" style={[styles.button, styles.sendButton, { marginBottom: 10 }]} onPress={handleAddRole}>Enviar</Button>
