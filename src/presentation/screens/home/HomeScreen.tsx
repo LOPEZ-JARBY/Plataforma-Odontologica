@@ -7,11 +7,7 @@ import { MenuItem } from '../../components/ui/MenuItem';
 
 
 const animationMenuItems = [
-   {
-    name: 'Animation 101',
-    icon: 'cube-outline',
-    component: 'Animation101Screen  ',
-  },
+
   {
     name: 'Animation 102',
     icon: 'albums-outline',
@@ -22,6 +18,13 @@ const animationMenuItems = [
     icon: 'albums-outline',
     component: 'EditRoleScreen',
   },
+
+  {
+    name: 'Login',
+    icon: 'albums-outline',
+    component: 'LoginScreen',
+  },
+
 
 ]
 

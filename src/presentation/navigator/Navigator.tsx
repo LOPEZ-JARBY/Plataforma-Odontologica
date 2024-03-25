@@ -10,10 +10,8 @@ import { InfiniteScrollScreen } from '../screens/ui/InfiniteScrollScreen';
 import { InfiniteScrollScreen2 } from '../screens/ui/InfiniteScrollScreen2';
 import { Animation102Screen } from '../screens/animations/Animation102Screen';
 import { RolesScreen } from '../screens/inputs/RolesScreen';
-import { Animation101Screen } from '../screens/animations/Animation101Screen';
 import { EditRoleScreen } from '../screens/inputs/EditRoleScreen';
-
-
+import { LoginScreen } from '../screens/animations/LoginScreen';
 
 
 
@@ -26,7 +24,6 @@ export const Navigator =() => {
         headerShown: false
     }}>
       <Stack.Screen name="HomeScreen" component={HomeScreen} />
-      <Stack.Screen name="Animation101Screen" component={Animation101Screen} />
       <Stack.Screen name="SwitchScreen" component={SwitchScreen} />
       <Stack.Screen name="AlertScreen" component={AlertScreen} />
       <Stack.Screen name="TextInputScreen" component={TextInputScreen} />
@@ -38,6 +35,7 @@ export const Navigator =() => {
       <Stack.Screen name="InfiniteScrollScreen2" component={InfiniteScrollScreen2} />
       <Stack.Screen name="Animation102Screen" component={Animation102Screen} />
       <Stack.Screen name="EditRoleScreen" component={EditRoleScreen} />
+      <Stack.Screen name="LoginScreen" component={LoginScreen} />
 
     </Stack.Navigator>
   );
