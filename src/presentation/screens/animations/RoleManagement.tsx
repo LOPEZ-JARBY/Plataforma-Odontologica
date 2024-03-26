@@ -13,7 +13,7 @@ type Role = {
   EstadoBD: string;
 };
 
-export const Animation102Screen = () => {
+export const RoleManagement = () => {
   const [results, setResults] = useState<Role[]>([]);
   const [selectedRole, setSelectedRole] = useState<Role | null>(null);
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
@@ -107,7 +107,7 @@ export const Animation102Screen = () => {
     Descripcion: editedDescripcion,
     Usr_Registro: editedUsrRegistro,
   });
-  
+
   const handleAddRole = () => {
 
     // Realizar la solicitud POST al backend
@@ -118,24 +118,24 @@ export const Animation102Screen = () => {
       },
       body: JSON.stringify(newRoleData), // Convertir los datos a formato JSON
     })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Error al agregar el nuevo rol');
-      }
-      return response.json();
-    })
-    .then(() => {
-      setIsAddModalVisible(false);
-      setNewRoleData({ Rol: '', Descripcion: '', Usr_Registro: '' });
-      fetch('http://10.0.2.2:3000/api/roles')
-        .then(response => response.json())
-        .then(data => setResults(data))
-        .catch(error => console.error('Error al ejecutar la consulta: ' + error));
-    })
-    .catch(error => console.error('Error al agregar el nuevo rol:', error));
-};
-  
-  
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Error al agregar el nuevo rol');
+        }
+        return response.json();
+      })
+      .then(() => {
+        setIsAddModalVisible(false);
+        setNewRoleData({ Rol: '', Descripcion: '', Usr_Registro: '' });
+        fetch('http://10.0.2.2:3000/api/roles')
+          .then(response => response.json())
+          .then(data => setResults(data))
+          .catch(error => console.error('Error al ejecutar la consulta: ' + error));
+      })
+      .catch(error => console.error('Error al agregar el nuevo rol:', error));
+  };
+
+
 
   const handleCancelAddModal = () => {
     setIsAddModalVisible(false);
@@ -155,26 +155,28 @@ export const Animation102Screen = () => {
       </View>
       <ScrollView style={styles.scrollContainer}>
         <List.Section>
-          {results.map(role => (
-            <TouchableOpacity key={role.Cod_Rol} onPress={() => handleSelectRole(role)}>
-              <List.Item
-                title={role.Rol}
-                description={`Descripción: ${role.Descripcion}\nUsuario Registro: ${role.Usr_Registro}\nFecha Registro: ${formatDate(
-                  new Date(role.Fecha_Registro)
-                )}\nEstado: ${role.EstadoBD}`}
-                left={() => <Icon name="people" size={30} color="#000" />}
-                right={() => (
-                  <View style={styles.iconContainer}>
-                    <Icon name={selectedRole === role ? 'checkmark' : 'create'} size={24} color="#007bff" />
-                  </View>
-                )}
-                style={selectedRole === role ? styles.selectedItem : null}
-                descriptionNumberOfLines={4}
-                descriptionEllipsizeMode="tail"
-                descriptionStyle={{ marginTop: 5, color: 'gray' }}
-              />
-            </TouchableOpacity>
-          ))}
+          {results
+            .filter(role => role.EstadoBD !== 'eliminado')
+            .map(role => (
+              <TouchableOpacity key={role.Cod_Rol} onPress={() => handleSelectRole(role)}>
+                <List.Item
+                  title={role.Rol}
+                  description={`Descripción: ${role.Descripcion}\nUsuario Registro: ${role.Usr_Registro}\nFecha Registro: ${formatDate(
+                    new Date(role.Fecha_Registro)
+                  )}\nEstado: ${role.EstadoBD}`}
+                  left={() => <Icon name="people" size={30} color="#000" />}
+                  right={() => (
+                    <View style={styles.iconContainer}>
+                      <Icon name={selectedRole === role ? 'checkmark' : 'create'} size={24} color="#007bff" />
+                    </View>
+                  )}
+                  style={selectedRole === role ? styles.selectedItem : null}
+                  descriptionNumberOfLines={4}
+                  descriptionEllipsizeMode="tail"
+                  descriptionStyle={{ marginTop: 5, color: 'gray' }}
+                />
+              </TouchableOpacity>
+            ))}
         </List.Section>
       </ScrollView>
       {selectedRole && (
@@ -335,11 +337,11 @@ const pickerSelectStyles = StyleSheet.create({
   },
 });
 
-export default Animation102Screen;
+export default RoleManagement;
 
 
 
-  
+
 
 
 

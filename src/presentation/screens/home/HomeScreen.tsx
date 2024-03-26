@@ -9,9 +9,9 @@ import { MenuItem } from '../../components/ui/MenuItem';
 const animationMenuItems = [
 
   {
-    name: 'Animation 102',
+    name: 'Gestión de Roles',
     icon: 'albums-outline',
-    component: 'Animation102Screen',
+    component: 'RoleManagement',
   },
   {
     name: 'EDIT',
@@ -90,9 +90,9 @@ export const menuItems = [
     component: 'TextInputScreen',
   },
   {
-    name: 'RolesScreen',
+    name: 'Configuración',
     icon: 'document-text-outline',
-    component: 'RolesScreen',
+    component: 'SettingsScreen',
   },
 
   ]
@@ -149,15 +149,9 @@ return (
                    />
                 ))
               }
-             
 
-             
               <View style={{ marginTop: 30}} />
-
-
-
-
-                
+  
             </ScrollView>
 
 
