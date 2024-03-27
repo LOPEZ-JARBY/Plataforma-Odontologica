@@ -1,7 +1,5 @@
 import { Platform, StyleSheet, Switch, Text, View } from 'react-native'
-import { isEnabled } from 'react-native/Libraries/Performance/Systrace'
 import { colors } from '../../../config/theme/theme';
-
 
 interface Props {
     isOn: boolean;
@@ -9,9 +7,7 @@ interface Props {
 
     onChance: (value: boolean) => void;
 
-
 }
-
 
 export const CustomSwitch = ({ isOn, text, onChance }: Props) => {
 

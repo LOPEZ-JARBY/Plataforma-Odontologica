@@ -1,5 +1,5 @@
 import { StyleProp } from 'react-native';
-import { Text, View, ViewStyle } from 'react-native'
+import { View, ViewStyle } from 'react-native'
 import { colors } from '../../../config/theme/theme';
 import { PropsWithChildren } from 'react';
 

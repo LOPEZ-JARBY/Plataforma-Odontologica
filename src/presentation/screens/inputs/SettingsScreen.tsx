@@ -58,6 +58,12 @@ export const SettingsScreen = () => {
     },
     
     {
+      name: 'Gestión Objetos',
+      icon: 'key-outline',
+      component: 'ObjectManagement',
+    },
+
+    {
       name: 'Cerrar sesión',
       icon: 'log-out-outline',
       component: 'Logout',
