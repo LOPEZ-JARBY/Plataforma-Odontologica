@@ -4,27 +4,25 @@ import { List, Text, Button, TextInput } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Ionicons';
 import RNPickerSelect from 'react-native-picker-select';
 
-type Role = {
-  Cod_Rol: number;
-  Rol: string;
-  Descripcion: string;
+type Especialidad = {
+  Cod_Especialidades: number;
+  Nombre_especialidad: string;
   Fecha_Registro: Date;
   Usr_Registro: string;
   EstadoBD: string;
 };
 
-export const RoleManagement = () => {
-  const [results, setResults] = useState<Role[]>([]);
-  const [selectedRole, setSelectedRole] = useState<Role | null>(null);
+export const SpecialtyManagement = () => {
+  const [results, setResults] = useState<Especialidad[]>([]);
+  const [selectedEspecialidad, setSelectedEspecialidad] = useState<Especialidad | null>(null);
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const [isAddModalVisible, setIsAddModalVisible] = useState<boolean>(false);
-  const [editedRole, setEditedRole] = useState<Role | null>(null);
-  const [editedRol, setEditedRol] = useState<string>('');
-  const [editedDescripcion, setEditedDescripcion] = useState<string>('');
+  const [editedEspecialidad, setEditedEspecialidad] = useState<Especialidad | null>(null);
+  const [editedNombre_especialidad, setEditedNombre_especialidad] = useState<string>('');
   const [editedEstadoBD, setEditedEstadoBD] = useState<string>('');
 
   useEffect(() => {
-    fetch('http://10.0.2.2:3000/api/roles')
+    fetch('http://10.0.2.2:3000/api/especialidades')
       .then(response => {
         if (!response.ok) {
           throw new Error('Error en la respuesta de la API');
@@ -35,59 +33,56 @@ export const RoleManagement = () => {
       .catch(error => console.error('Error al ejecutar la consulta: ' + error));
   }, []);
 
-  const handleSelectRole = (role: Role) => {
-    setSelectedRole(role);
+  const handleSelectEspecialidad = (Especialidad: Especialidad) => {
+    setSelectedEspecialidad(Especialidad);
   };
 
-  const [editedCodRol, setEditedCodRol] = useState<number | null>(null);
+  const [editedCod_Especialidades, setEditedCod_Especialidades] = useState<number | null>(null);
   const [editedUsrRegistro, setEditedUsrRegistro] = useState<string>('');
 
-  const handleEditRole = (role: Role) => {
-    if (role) {
-      setEditedRole(role);
-      setEditedCodRol(role.Cod_Rol);
-      setEditedRol(role.Rol);
-      setEditedDescripcion(role.Descripcion);
-      setEditedUsrRegistro(role.Usr_Registro);
-      setEditedEstadoBD(role.EstadoBD);
+  const handleEditEspecialidad = (Especialidad: Especialidad) => {
+    if (Especialidad) {
+      setEditedEspecialidad(Especialidad);
+      setEditedCod_Especialidades(Especialidad.Cod_Especialidades);
+      setEditedNombre_especialidad(Especialidad.Nombre_especialidad);
+      setEditedUsrRegistro(Especialidad.Usr_Registro);
+      setEditedEstadoBD(Especialidad.EstadoBD);
       setIsModalVisible(true);
     }
   };
 
-  const handleUpdateRole = () => {
-    if (editedRole) {
+  const handleUpdateEspecialidad = () => {
+    if (editedEspecialidad) {
       console.log('Datos a enviar al backend:', {
-        Cod_Rol: editedCodRol,
-        Rol: editedRol,
-        Descripcion: editedDescripcion,
+        Cod_Especialidades: editedCod_Especialidades,
+        Nombre_especialidad: editedNombre_especialidad,
         EstadoBD: editedEstadoBD,
         Usr_Registro: editedUsrRegistro,
       });
-      fetch(`http://10.0.2.2:3000/api/roles/${editedRole.Cod_Rol}`, {
+      fetch(`http://10.0.2.2:3000/api/especialidades/${editedEspecialidad.Cod_Especialidades}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          Cod_Rol: editedCodRol,
-          Rol: editedRol,
-          Descripcion: editedDescripcion,
+          Cod_Especialidades: editedCod_Especialidades,
+          Nombre_especialidad: editedNombre_especialidad,
           EstadoBD: editedEstadoBD,
           Usr_Registro: editedUsrRegistro,
         }),
       })
         .then(response => {
           if (!response.ok) {
-            throw new Error('Error al actualizar el rol');
+            throw new Error('Error al actualizar la especialidad');
           }
-          return fetch('http://10.0.2.2:3000/api/roles');
+          return fetch('http://10.0.2.2:3000/api/especialidades');
         })
         .then(response => response.json())
         .then(data => {
           setResults(data);
           setIsModalVisible(false);
         })
-        .catch(error => console.error('Error al actualizar el rol:', error));
+        .catch(error => console.error('Error al actualizar la especialidad:', error));
     }
   };
 
@@ -102,37 +97,36 @@ export const RoleManagement = () => {
     return `${day}/${month}/${year}`;
   };
 
-  const [newRoleData, setNewRoleData] = useState<any>({
-    Rol: editedRol,
-    Descripcion: editedDescripcion,
+  const [newEspecialidadData, setNewEspecialidadData] = useState<any>({
+    Nombre_especialidad: editedNombre_especialidad,
     Usr_Registro: editedUsrRegistro,
   });
 
-  const handleAddRole = () => {
+  const handleAddEspecialidad = () => {
 
     // Realizar la solicitud POST al backend
-    fetch('http://10.0.2.2:3000/api/roles', {
+    fetch('http://10.0.2.2:3000/api/especialidades', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(newRoleData), // Convertir los datos a formato JSON
+      body: JSON.stringify(newEspecialidadData), // Convertir los datos a formato JSON
     })
       .then(response => {
         if (!response.ok) {
-          throw new Error('Error al agregar el nuevo rol');
+          throw new Error('Error al agregar la nueva especialidad');
         }
         return response.json();
       })
       .then(() => {
         setIsAddModalVisible(false);
-        setNewRoleData({ Rol: '', Descripcion: '', Usr_Registro: '' });
-        fetch('http://10.0.2.2:3000/api/roles')
+        setNewEspecialidadData({ Nombre_especialidad: '', Usr_Registro: '' });
+        fetch('http://10.0.2.2:3000/api/especialidades')
           .then(response => response.json())
           .then(data => setResults(data))
           .catch(error => console.error('Error al ejecutar la consulta: ' + error));
       })
-      .catch(error => console.error('Error al agregar el nuevo rol:', error));
+      .catch(error => console.error('Error al agregar la nueva especialidad:', error));
   };
 
 
@@ -148,7 +142,7 @@ export const RoleManagement = () => {
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
-        <Text style={styles.header}>Consulta de Roles:</Text>
+        <Text style={styles.header}>Consulta de Especialidades:</Text>
         <TouchableOpacity style={styles.addButton} onPress={handleAddModal}>
           <Icon name="add" size={30} color="#007bff" />
         </TouchableOpacity>
@@ -156,21 +150,21 @@ export const RoleManagement = () => {
       <ScrollView style={styles.scrollContainer}>
         <List.Section>
           {results
-            .filter(role => role.EstadoBD !== 'eliminado')
-            .map(role => (
-              <TouchableOpacity key={role.Cod_Rol} onPress={() => handleSelectRole(role)}>
+            .filter(especialidad => especialidad.EstadoBD !== 'eliminado')
+            .map(especialidad => (
+              <TouchableOpacity key={especialidad.Cod_Especialidades} onPress={() => handleSelectEspecialidad(especialidad)}>
                 <List.Item
-                  title={role.Rol}
-                  description={`Descripción: ${role.Descripcion}\nUsuario Registro: ${role.Usr_Registro}\nFecha Registro: ${formatDate(
-                    new Date(role.Fecha_Registro)
-                  )}\nEstado: ${role.EstadoBD}`}
+                  title={especialidad.Nombre_especialidad}
+                  description={`Usuario Registro: ${especialidad.Usr_Registro}\nFecha Registro: ${formatDate(
+                    new Date(especialidad.Fecha_Registro)
+                  )}\nEstado: ${especialidad.EstadoBD}`}
                   left={() => <Icon name="people" size={30} color="#000" />}
                   right={() => (
                     <View style={styles.iconContainer}>
-                      <Icon name={selectedRole === role ? 'checkmark' : 'create'} size={24} color="#007bff" />
+                      <Icon name={selectedEspecialidad === especialidad ? 'checkmark' : 'create'} size={24} color="#007bff" />
                     </View>
                   )}
-                  style={selectedRole === role ? styles.selectedItem : null}
+                  style={selectedEspecialidad === especialidad ? styles.selectedItem : null}
                   descriptionNumberOfLines={4}
                   descriptionEllipsizeMode="tail"
                   descriptionStyle={{ marginTop: 5, color: 'gray' }}
@@ -179,53 +173,41 @@ export const RoleManagement = () => {
             ))}
         </List.Section>
       </ScrollView>
-      {selectedRole && (
+      {selectedEspecialidad && (
         <View style={styles.actionsContainer}>
-          <Button mode="contained" onPress={() => handleEditRole(selectedRole)}>Editar Rol</Button>
+          <Button mode="contained" onPress={() => handleEditEspecialidad(selectedEspecialidad)}>Editar Especialidad</Button>
         </View>
       )}
       {/* Segundo Modal */}
       <Modal visible={isAddModalVisible} transparent={true} animationType="slide">
         <View style={styles.modalContainer}>
-          <Text style={[styles.modalTitle, { color: '#ffffff', fontSize: 24 }]}>Nuevo Rol</Text>
+          <Text style={[styles.modalTitle, { color: '#ffffff', fontSize: 24 }]}>Nueva Especialidad</Text>
           {/* Contenido del segundo modal */}
           <TextInput
             style={styles.input}
-            value={newRoleData.Rol}
-            onChangeText={text => setNewRoleData({ ...newRoleData, Rol: text })}
-            placeholder="Rol"
+            value={newEspecialidadData.Nombre_especialidad}
+            onChangeText={text => setNewEspecialidadData({ ...newEspecialidadData, Nombre_especialidad: text })}
+            placeholder="Especialidad"
           />
           <TextInput
             style={styles.input}
-            value={newRoleData.Descripcion}
-            onChangeText={text => setNewRoleData({ ...newRoleData, Descripcion: text })}
-            placeholder="Descripción"
-          />
-          <TextInput
-            style={styles.input}
-            value={newRoleData.Usr_Registro}
-            onChangeText={text => setNewRoleData({ ...newRoleData, Usr_Registro: text })}
+            value={newEspecialidadData.Usr_Registro}
+            onChangeText={text => setNewEspecialidadData({ ...newEspecialidadData, Usr_Registro: text })}
             placeholder="Usuario de Registro"
           />
-          <Button mode="contained" style={[styles.button, styles.sendButton, { marginBottom: 10 }]} onPress={handleAddRole}>Enviar</Button>
+          <Button mode="contained" style={[styles.button, styles.sendButton, { marginBottom: 10 }]} onPress={handleAddEspecialidad}>Enviar</Button>
           <Button mode="contained" style={[styles.button, styles.cancelButton]} onPress={handleCancelAddModal}>Cancelar</Button>
         </View>
       </Modal>
       {/* Primer Modal */}
       <Modal visible={isModalVisible} transparent={true} animationType="slide">
         <View style={styles.modalContainer}>
-          <Text style={[styles.modalTitle, { color: '#ffffff', fontSize: 24 }]}>Editar Rol</Text>
+          <Text style={[styles.modalTitle, { color: '#ffffff', fontSize: 24 }]}>Editar Especialidad</Text>
           <TextInput
             style={styles.input}
-            value={editedRol}
-            onChangeText={text => setEditedRol(text)}
-            placeholder="Rol"
-          />
-          <TextInput
-            style={styles.input}
-            value={editedDescripcion}
-            onChangeText={text => setEditedDescripcion(text)}
-            placeholder="Descripción"
+            value={editedNombre_especialidad}
+            onChangeText={text => setEditedNombre_especialidad(text)}
+            placeholder="Especialidad"
           />
           <View style={{ alignItems: 'flex-end', marginBottom: 20 }}>
             <RNPickerSelect
@@ -238,7 +220,7 @@ export const RoleManagement = () => {
               value={editedEstadoBD}
             />
           </View>
-          <Button mode="contained" style={[styles.button, styles.sendButton, { marginBottom: 10 }]} onPress={handleUpdateRole}>Enviar</Button>
+          <Button mode="contained" style={[styles.button, styles.sendButton, { marginBottom: 10 }]} onPress={handleUpdateEspecialidad}>Enviar</Button>
           <Button mode="contained" style={[styles.button, styles.cancelButton]} onPress={closeModal}>Cancelar</Button>
         </View>
       </Modal>
@@ -337,4 +319,4 @@ const pickerSelectStyles = StyleSheet.create({
   },
 });
 
-export default RoleManagement;
+export default SpecialtyManagement;

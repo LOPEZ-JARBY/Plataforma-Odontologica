@@ -12,6 +12,8 @@ import { RoleManagement } from '../screens/animations/RoleManagement';
 import { EditRoleScreen } from '../screens/inputs/EditRoleScreen';
 import { LoginScreen } from '../screens/animations/LoginScreen';
 import { SettingsScreen } from '../screens/inputs/SettingsScreen';
+import SpecialtyManagement from '../screens/animations/SpecialtyManagement';
+
 
 
 
@@ -38,6 +40,7 @@ export const Navigator =() => {
       <Stack.Screen name="RoleManagement" component={RoleManagement} />
       <Stack.Screen name="EditRoleScreen" component={EditRoleScreen} />
       <Stack.Screen name="LoginScreen" component={LoginScreen} />
+      <Stack.Screen name="SpecialtyManagement" component={SpecialtyManagement} />
       
 
     </Stack.Navigator>

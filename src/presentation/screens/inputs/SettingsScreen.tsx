@@ -20,9 +20,9 @@ export const SettingsScreen = () => {
 
   const developerMenuItems = [
     {
-      name: 'Editar Especialidades',
+      name: 'Gestión de Especialidades',
       icon: 'hammer-outline',
-      component: 'EditSpecialties',
+      component: 'SpecialtyManagement',
     },
 
     {
