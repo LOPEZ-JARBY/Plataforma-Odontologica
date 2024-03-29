@@ -59,7 +59,7 @@ export const SettingsScreen = () => {
     
     {
       name: 'Gestión Objetos',
-      icon: 'key-outline',
+      icon: 'document-text-outline',
       component: 'ObjectManagement',
     },
 
