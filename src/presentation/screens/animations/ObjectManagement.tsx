@@ -3,6 +3,8 @@ import { View, ScrollView, StyleSheet, TouchableOpacity, Modal } from 'react-nat
 import { List, Text, Button, TextInput } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Ionicons';
 import RNPickerSelect from 'react-native-picker-select';
+import { useAuth } from '../animations/AuthContext'; // Ajusta la ruta según la ubicación de tu AuthContext
+
 
 type P_Objeto = {
   Cod_Objeto: number;
@@ -15,6 +17,7 @@ type P_Objeto = {
 };
 
 export const ObjectManagement = () => {
+  const { user } = useAuth();
   const [results, setResults] = useState<P_Objeto[]>([]);
   const [selectedP_Objeto, setSelectedP_Objeto] = useState<P_Objeto | null>(null);
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
@@ -24,6 +27,8 @@ export const ObjectManagement = () => {
   const [editedDescripcion, setEditedDescripcion] = useState<string>('');
   const [editedTipo_Objeto, setEditedTipo_Objeto] = useState<string>('');
   const [editedEstadoBD, setEditedEstadoBD] = useState<string>('');
+
+
 
   useEffect(() => {
     fetch('http://10.0.2.2:3000/api/objetos')
@@ -153,9 +158,18 @@ export const ObjectManagement = () => {
   };
 
   return (
+    
     <View style={styles.container}>
+      {/* Muestra el nombre del usuario logueado en la parte superior, alineado a la derecha */}
+      {user && (
+        <View style={styles.welcomeContainer}>
+          <Text style={styles.welcomeText}>Bienvenido: </Text>
+          <Text style={styles.userName}>{user.nombre}</Text>
+        </View>
+      )}
       <View style={styles.headerContainer}>
         <Text style={styles.header}>Consulta de Objetos:</Text>
+
         <TouchableOpacity style={styles.addButton} onPress={handleAddModal}>
           <Icon name="add" size={30} color="#007bff" />
         </TouchableOpacity>
@@ -190,6 +204,7 @@ export const ObjectManagement = () => {
         <View style={styles.actionsContainer}>
           <Button mode="contained" onPress={() => handleEditP_Objeto(selectedP_Objeto)}>Editar Objeto</Button>
         </View>
+
       )}
       {/* Segundo Modal para Insertar*/}
       <Modal visible={isAddModalVisible} transparent={true} animationType="slide">
@@ -328,6 +343,30 @@ const styles = StyleSheet.create({
   cancelButton: {
     backgroundColor: '#999999', // Cambia el color de fondo del botón de Cancelar a gris
   },
+  userGreeting: {
+    margin: 1,
+    fontSize: 20,
+    fontWeight: 'bold',
+    
+    color: '#007bff', // Esto hará que el texto sea azul.
+  },
+
+  welcomeContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end', // Alinea el contenido a la derecha
+    marginRight: 20, // Ajusta el margen derecho según sea necesario
+    marginTop: 20, // Ajusta el margen superior según sea necesario
+  },
+  welcomeText: {
+    fontSize: 18, // Ajusta el tamaño de fuente según sea necesario
+    color: '#000', // Ajusta el color de fuente según sea necesario
+  },
+  userName: {
+    fontSize: 18, // Asegúrate de que coincida con el tamaño de fuente de welcomeText
+    color: '#007bff', // Cambia esto al color deseado para el nombre del usuario
+    fontWeight: 'bold', // Opcional: para darle más énfasis al nombre del usuario
+  },
+
 });
 
 const pickerSelectStyles = StyleSheet.create({

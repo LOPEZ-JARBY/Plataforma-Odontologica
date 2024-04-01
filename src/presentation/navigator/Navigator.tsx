@@ -1,4 +1,5 @@
 import { createStackNavigator } from '@react-navigation/stack';
+import { RootStackParamList } from './navigationTypes';
 import { HomeScreen } from '../screens/home/HomeScreen';
 import { SwitchScreen } from '../screens/switches/SwitchScreen';
 import { AlertScreen } from '../screens/alerts/AlertScreen';
@@ -15,16 +16,19 @@ import { SettingsScreen } from '../screens/inputs/SettingsScreen';
 import { SpecialtyManagement } from '../screens/animations/SpecialtyManagement';
 import { AccessManagement } from '../screens/animations/AccessManagement';
 import { ObjectManagement } from '../screens/animations/ObjectManagement';
+import { RegisterScreen } from '../screens/animations/RegisterScreen';
 
 
 
-const Stack = createStackNavigator();
+
+const Stack = createStackNavigator<RootStackParamList>();
 
 export const Navigator =() => {
   return (
     <Stack.Navigator screenOptions={{
         headerShown: false
     }}>
+      <Stack.Screen name="LoginScreen" component={LoginScreen} />
       <Stack.Screen name="HomeScreen" component={HomeScreen} />
       <Stack.Screen name="SwitchScreen" component={SwitchScreen} />
       <Stack.Screen name="AlertScreen" component={AlertScreen} />
@@ -37,11 +41,11 @@ export const Navigator =() => {
       <Stack.Screen name="InfiniteScrollScreen2" component={InfiniteScrollScreen2} />
       <Stack.Screen name="RoleManagement" component={RoleManagement} />
       <Stack.Screen name="EditRoleScreen" component={EditRoleScreen} />
-      <Stack.Screen name="LoginScreen" component={LoginScreen} />
       <Stack.Screen name="SpecialtyManagement" component={SpecialtyManagement} />
       <Stack.Screen name="AccessManagement" component={AccessManagement} />
       <Stack.Screen name="ObjectManagement" component={ObjectManagement} />
-      
+      <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
+     
 
     </Stack.Navigator>
   );
