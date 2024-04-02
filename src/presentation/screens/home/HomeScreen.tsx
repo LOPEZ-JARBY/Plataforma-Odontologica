@@ -148,7 +148,7 @@ export const HomeScreen = () => {
         {/* Muestra el nombre del usuario logueado en la parte superior, alineado a la derecha */}
         {user && (
           <View style={styles.welcomeContainer}>
-            <Text style={styles.welcomeText}>Bienvenido, </Text>
+            <Text style={styles.welcomeText}>Bienvenido: </Text>
             <Text style={styles.userName}>{user.nombre}</Text>
           </View>
         )}

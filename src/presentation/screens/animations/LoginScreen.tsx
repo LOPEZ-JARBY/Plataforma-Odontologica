@@ -15,30 +15,36 @@ import { useAuth } from '../animations/AuthContext';
 type NavigationProp = StackNavigationProp<RootStackParamList, 'LoginScreen'>;
 
 export const LoginScreen = () => {
-  
+
   const navigation = useNavigation<NavigationProp>();
   const { height } = useWindowDimensions();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-    // Restablece el estado cuando la pantalla entra en foco
-    useFocusEffect(
-      React.useCallback(() => {
-        //setUsername('');
-        setPassword('');
-      }, [])
-    );
+  // Restablece el estado cuando la pantalla entra en foco
+  useFocusEffect(
+    React.useCallback(() => {
+      //setUsername('');
+      setPassword('');
+    }, [])
+  );
   const { signIn } = useAuth(); // Utiliza el hook useAuth para obtener signIn
 
   const handleLogin = async () => {
-      // Verificar si alguno de los campos está vacío
-  if (username.trim() === '' || password.trim() === '') {
-    Alert.alert('Campos Requeridos', 'Por favor, ingresa tu correo electrónico y contraseña.');
-    return; // Detiene la ejecución de la función si algún campo está vacío
-  }
-    
+    // Verificar si alguno de los campos está vacío
+    if (username.trim() === '' || password.trim() === '') {
+      Alert.alert('Campos Requeridos', 'Por favor, ingresa tu correo electrónico y contraseña.');
+      return; // Detiene la ejecución de la función si algún campo está vacío
+    }
+
     // Log para visualizar los valores antes de enviarlos
     console.log('Enviando al backend:', { emailOrUsername: username, password });
+
+    {/*const userData = {
+      username: "",
+      email: "",
+      // otros campos como nombre, id, etc.
+    };*/}
 
     try {
       const response = await axios.post('http://10.0.2.2:3000/api/login', {
@@ -46,8 +52,10 @@ export const LoginScreen = () => {
         password: password,
       });
       // Si la solicitud es exitosa y el login es correcto, redirige a HomeScreen
-      if (response.data === 'Login exitoso.') {
-        signIn({ nombre: username }); // Ajusta esto según los datos reales que recibas
+      // Aquí asumimos que la respuesta es un objeto JSON con los campos 'message' y 'usuario'
+      if (response.data.message === 'Login exitoso.') {
+        // Aquí utilizas el valor de 'usuario' para iniciar sesión en el contexto
+        signIn({ nombre: response.data.usuario }); // Ajusta esta línea según la estructura de tu objeto User
         navigation.navigate('HomeScreen');
       } else {
         // Puedes manejar diferentes estados o errores de login aquí
@@ -58,7 +66,7 @@ export const LoginScreen = () => {
       if (axios.isAxiosError(error)) {
         // Ahora TypeScript sabe que 'error' es un AxiosError y puedes acceder a 'error.response'
         if (error.response && error.response.status === 401) {
-          Alert.alert('Error', 'Usuario/Correo o Contraseña incorrecta'); 
+          Alert.alert('Error', 'Usuario/Correo o Contraseña incorrecta');
           setPassword(''); // Aquí limpias el input de contraseña        
         } else {
           Alert.alert('Error de Conexión', 'No se pudo conectar al servidor');
@@ -66,7 +74,7 @@ export const LoginScreen = () => {
       } else {
         // Manejo de otros tipos de errores
         Alert.alert('Error', 'Ocurrió un error inesperado');
-        
+
       }
     }
   };

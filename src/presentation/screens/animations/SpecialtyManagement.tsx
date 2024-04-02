@@ -3,6 +3,8 @@ import { View, ScrollView, StyleSheet, TouchableOpacity, Modal } from 'react-nat
 import { List, Text, Button, TextInput } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Ionicons';
 import RNPickerSelect from 'react-native-picker-select';
+import { useAuth } from './AuthContext';
+
 
 type Especialidad = {
   Cod_Especialidades: number;
@@ -13,6 +15,7 @@ type Especialidad = {
 };
 
 export const SpecialtyManagement = () => {
+  const { user } = useAuth();
   const [results, setResults] = useState<Especialidad[]>([]);
   const [selectedEspecialidad, setSelectedEspecialidad] = useState<Especialidad | null>(null);
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
@@ -57,8 +60,12 @@ export const SpecialtyManagement = () => {
         Cod_Especialidades: editedCod_Especialidades,
         Nombre_especialidad: editedNombre_especialidad,
         EstadoBD: editedEstadoBD,
-        Usr_Registro: editedUsrRegistro,
+        Usr_Registro: user!.nombre,
       });
+
+
+
+
       fetch(`http://10.0.2.2:3000/api/especialidades/${editedEspecialidad.Cod_Especialidades}`, {
         method: 'PUT',
         headers: {
@@ -68,7 +75,7 @@ export const SpecialtyManagement = () => {
           Cod_Especialidades: editedCod_Especialidades,
           Nombre_especialidad: editedNombre_especialidad,
           EstadoBD: editedEstadoBD,
-          Usr_Registro: editedUsrRegistro,
+          Usr_Registro: user!.nombre,
         }),
       })
         .then(response => {
@@ -104,13 +111,21 @@ export const SpecialtyManagement = () => {
 
   const handleAddEspecialidad = () => {
 
+    // 
+    const especialidadDataParaEnviar = {
+      Nombre_especialidad: newEspecialidadData.Nombre_especialidad,
+      // Asumiendo que 'user.nombre' contiene el nombre del usuario logueado
+      Usr_Registro: user ? user.nombre : 'NombreDeUsuarioPorDefecto', 
+      // Otros campos necesarios para tu especialidad...
+    };
+
     // Realizar la solicitud POST al backend
     fetch('http://10.0.2.2:3000/api/especialidades', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(newEspecialidadData), // Convertir los datos a formato JSON
+      body: JSON.stringify(especialidadDataParaEnviar), // Convertir los datos a formato JSON
     })
       .then(response => {
         if (!response.ok) {
@@ -141,6 +156,13 @@ export const SpecialtyManagement = () => {
 
   return (
     <View style={styles.container}>
+      {/* Muestra el nombre del usuario logueado en la parte superior, alineado a la derecha */}
+      {user && (
+        <View style={styles.welcomeContainer}>
+          <Text style={styles.welcomeText}>Bienvenido: </Text>
+          <Text style={styles.userName}>{user.nombre}</Text>
+        </View>
+      )}
       <View style={styles.headerContainer}>
         <Text style={styles.header}>Consulta de Especialidades:</Text>
         <TouchableOpacity style={styles.addButton} onPress={handleAddModal}>
@@ -189,12 +211,12 @@ export const SpecialtyManagement = () => {
             onChangeText={text => setNewEspecialidadData({ ...newEspecialidadData, Nombre_especialidad: text })}
             placeholder="Especialidad"
           />
-          <TextInput
+          {/*<TextInput
             style={styles.input}
             value={newEspecialidadData.Usr_Registro}
             onChangeText={text => setNewEspecialidadData({ ...newEspecialidadData, Usr_Registro: text })}
             placeholder="Usuario de Registro"
-          />
+      />*/}
           <Button mode="contained" style={[styles.button, styles.sendButton, { marginBottom: 10 }]} onPress={handleAddEspecialidad}>Enviar</Button>
           <Button mode="contained" style={[styles.button, styles.cancelButton]} onPress={handleCancelAddModal}>Cancelar</Button>
         </View>
@@ -291,6 +313,24 @@ const styles = StyleSheet.create({
   cancelButton: {
     backgroundColor: '#999999', // Cambia el color de fondo del botón de Cancelar a gris
   },
+
+  welcomeContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end', // Alinea el contenido a la derecha
+    marginRight: 20, // Ajusta el margen derecho según sea necesario
+    marginTop: 20, // Ajusta el margen superior según sea necesario
+  },
+  welcomeText: {
+    fontSize: 18, // Ajusta el tamaño de fuente según sea necesario
+    color: '#000', // Ajusta el color de fuente según sea necesario
+  },
+  userName: {
+    fontSize: 18, // Asegúrate de que coincida con el tamaño de fuente de welcomeText
+    color: '#007bff', // Cambia esto al color deseado para el nombre del usuario
+    fontWeight: 'bold', // Opcional: para darle más énfasis al nombre del usuario
+  },
+
+
 });
 
 const pickerSelectStyles = StyleSheet.create({

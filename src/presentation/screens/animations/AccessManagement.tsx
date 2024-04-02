@@ -5,6 +5,7 @@ import { CustomView } from '../../components/ui/CustomView';
 import { Card } from '../../components/ui/Card';
 import { CustomSwitch } from '../../components/ui/CustomSwitch';
 import { Alert, StyleSheet, Text, View } from 'react-native';
+import { useAuth } from './AuthContext';
 type Permission = 'insert' | 'edit' | 'delete' | 'query';
 type PermissionsState = Record<Permission, boolean>;
 interface Role {
@@ -32,6 +33,7 @@ function booleanToEnum(value: boolean): string {
   return value ? 'S' : 'N';
 }
 export const AccessManagement = () => {
+  const { user } = useAuth();
   const [selectedRole, setSelectedRole] = useState<number | undefined>(undefined);
   const [selectedObject, setSelectedObject] = useState<string | undefined>(undefined);
   const [roles, setRoles] = useState<Role[]>([]);
@@ -60,11 +62,11 @@ export const AccessManagement = () => {
       Cod_Rol: selectedRole, // Asegúrate de que este valor esté definido
       Cod_Objeto: selectedObject, // Asegúrate de que este valor esté definido
     };
-  
+
     console.log(`Role: ${selectedRole}`);
     console.log(`Object: ${selectedObject}`);
     console.log('Permissions:', permissionsPayload);
-  
+
     // Realiza una solicitud GET para verificar si existe un permiso para la combinación de Cod_Rol y Cod_Objeto
     fetch(`http://10.0.2.2:3000/api/permisos?Cod_Rol=${selectedRole}&Cod_Objeto=${selectedObject}`)
       .then(response => {
@@ -116,7 +118,7 @@ export const AccessManagement = () => {
         );
       });
   };
-  
+
 
 
 
@@ -179,6 +181,13 @@ export const AccessManagement = () => {
 
   return (
     <CustomView margin>
+      {/* Muestra el nombre del usuario logueado en la parte superior, alineado a la derecha */}
+      {user && (
+        <View style={styles.welcomeContainer}>
+          <Text style={styles.welcomeText}>Bienvenido: </Text>
+          <Text style={styles.userName}>{user.nombre}</Text>
+        </View>
+      )}
       <View style={styles.headerContainer}>
         <Text style={styles.header}>Gestión de Permisos:</Text>
       </View>
@@ -217,6 +226,7 @@ export const AccessManagement = () => {
   );
 };
 export default AccessManagement;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -235,5 +245,24 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: 20
-  }
+  },
+
+  welcomeContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end', // Alinea el contenido a la derecha
+    marginRight: 20, // Ajusta el margen derecho según sea necesario
+    marginTop: 20, // Ajusta el margen superior según sea necesario
+  },
+  welcomeText: {
+    fontSize: 18, // Ajusta el tamaño de fuente según sea necesario
+    color: '#000', // Ajusta el color de fuente según sea necesario
+  },
+  userName: {
+    fontSize: 18, // Asegúrate de que coincida con el tamaño de fuente de welcomeText
+    color: '#007bff', // Cambia esto al color deseado para el nombre del usuario
+    fontWeight: 'bold', // Opcional: para darle más énfasis al nombre del usuario
+  },
+
+
+
 });

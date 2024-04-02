@@ -69,8 +69,8 @@ export const ObjectManagement = () => {
         Objeto: editedObjeto,
         Descripcion: editedDescripcion,
         Tipo_Objeto: editedTipo_Objeto,
-        Usr_Registro: editedUsrRegistro,
         EstadoBD: editedEstadoBD,
+        Usr_Registro: user!.nombre,
 
       });
       fetch(`http://10.0.2.2:3000/api/objetos/${editedP_Objeto.Cod_Objeto}`, {
@@ -84,7 +84,7 @@ export const ObjectManagement = () => {
           Descripcion: editedDescripcion,
           Tipo_Objeto: editedTipo_Objeto,
           EstadoBD: editedEstadoBD,
-          Usr_Registro: editedUsrRegistro,
+          Usr_Registro: user!.nombre,
         }),
       })
         .then(response => {
@@ -122,13 +122,25 @@ export const ObjectManagement = () => {
 
   const handleAddP_Objeto = () => {
 
+        // Asegúrate de que 'user' no es null antes de proceder
+        if (!user) {
+          console.log("No hay usuario logueado.");
+          return;
+      }
+
+       // Configura el nuevo objeto con el nombre de usuario del usuario logueado
+    const newP_ObjetoWithUser = {
+      ...newP_ObjetoData,
+      Usr_Registro: user.nombre, // Asumiendo que 'nombre' es el campo que contiene el nombre de usuario
+  };
+
     // Realizar la solicitud POST al backend
     fetch('http://10.0.2.2:3000/api/objetos', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(newP_ObjetoData), // Convertir los datos a formato JSON
+      body: JSON.stringify(newP_ObjetoWithUser), // Convertir los datos a formato JSON
     })
       .then(response => {
         if (!response.ok) {
@@ -229,12 +241,12 @@ export const ObjectManagement = () => {
             onChangeText={text => setNewP_ObjetoData({ ...newP_ObjetoData, Tipo_Objeto: text })}
             placeholder="Tipo de Objeto "
           />
-          <TextInput
+          {/*<TextInput
             style={styles.input}
             value={newP_ObjetoData.Usr_Registro}
             onChangeText={text => setNewP_ObjetoData({ ...newP_ObjetoData, Usr_Registro: text })}
             placeholder="Usuario de Registro"
-          />
+          />*/}
           <Button mode="contained" style={[styles.button, styles.sendButton, { marginBottom: 10 }]} onPress={handleAddP_Objeto}>Enviar</Button>
           <Button mode="contained" style={[styles.button, styles.cancelButton]} onPress={handleCancelAddModal}>Cancelar</Button>
         </View>
